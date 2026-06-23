@@ -1,0 +1,11 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "Full Stack Portfolio — React + Node.js + MySQL",
+  "scripts": {
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm run dev",
+    "setup-db": "cd backend && npm run setup-db",
+    "install:all": "cd backend && npm install && cd ../frontend && npm install"
+  }
+}
