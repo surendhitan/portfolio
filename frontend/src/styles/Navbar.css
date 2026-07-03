@@ -4,7 +4,7 @@
   transition: var(--transition);
 }
 .navbar.scrolled {
-  background: rgba(10,10,15,0.9);
+  background: var(--bg-nav, rgba(255, 255, 255, 0.85));
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
   padding: 0.75rem 0;
@@ -46,7 +46,7 @@
 
 .mobile-menu {
   display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(10,10,15,0.97); backdrop-filter: blur(20px);
+  background: var(--bg-mobile, rgba(245, 245, 245, 0.97)); backdrop-filter: blur(20px);
   z-index: 999; flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
 }
 .mobile-menu.open { display: flex; }

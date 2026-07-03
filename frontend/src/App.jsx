@@ -2,12 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import portfolioApi from './api/portfolioApi';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import About from './components/About';
 import Skills from './components/Skills';
-import Resume from './components/Resume';
+import Certs from './components/Certs';
 import Projects from './components/Projects';
-import Services from './components/Services';
-import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
 import './index.css';
 
@@ -54,7 +51,10 @@ function Footer({ profile }) {
     { href: profile?.twitter_url, icon: 'fab fa-twitter', label: 'Twitter' },
   ].filter(s => s.href && s.href !== '#');
 
-  const scrollTo = (href) => document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+  const scrollTo = (href) => {
+    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+    window.history.pushState(null, null, href);
+  };
 
   return (
     <footer className="footer">
@@ -62,7 +62,7 @@ function Footer({ profile }) {
         <div className="footer-inner">
           {/* Brand */}
           <div className="footer-brand">
-            <div className="footer-logo">{profile?.name?.split(' ')[0] || 'Portfolio'}</div>
+            <div className="footer-logo">{profile?.name || 'SURENDHIRAN A'}</div>
             <p className="footer-tagline">{profile?.title || 'Full Stack Developer'}</p>
             <div className="footer-socials">
               {socials.map(s => (
@@ -78,10 +78,15 @@ function Footer({ profile }) {
           <div className="footer-links">
             <h4 className="footer-heading">Quick Links</h4>
             <ul>
-              {['#home', '#about', '#skills', '#projects', '#services', '#contact'].map(href => (
-                <li key={href}>
-                  <a href={href} onClick={e => { e.preventDefault(); scrollTo(href); }}>
-                    {href.slice(1).charAt(0).toUpperCase() + href.slice(2)}
+              {[
+                { label: 'Work', href: '#projects' },
+                { label: 'Stack', href: '#skills' },
+                { label: 'Certs', href: '#certs' },
+                { label: 'Contact', href: '#contact' }
+              ].map(item => (
+                <li key={item.href}>
+                  <a href={item.href} onClick={e => { e.preventDefault(); scrollTo(item.href); }}>
+                    {item.label}
                   </a>
                 </li>
               ))}
@@ -100,18 +105,18 @@ function Footer({ profile }) {
 
           {/* Contact */}
           <div className="footer-links">
-            <h4 className="footer-heading">Contact</h4>
+            <h4 className="footer-heading">Contact Details</h4>
             <ul>
-              <li><i className="fas fa-envelope" style={{ marginRight: 8, color: 'var(--primary-light)' }} />{profile?.email}</li>
-              <li><i className="fas fa-phone" style={{ marginRight: 8, color: 'var(--primary-light)' }} />{profile?.phone}</li>
-              <li><i className="fas fa-map-marker-alt" style={{ marginRight: 8, color: 'var(--primary-light)' }} />{profile?.location}</li>
+              <li><i className="fas fa-envelope" style={{ marginRight: 8, color: 'var(--primary)' }} />{profile?.email}</li>
+              <li><i className="fas fa-phone" style={{ marginRight: 8, color: 'var(--primary)' }} />{profile?.phone}</li>
+              <li><i className="fas fa-map-marker-alt" style={{ marginRight: 8, color: 'var(--primary)' }} />{profile?.location}</li>
             </ul>
           </div>
         </div>
 
         <div className="footer-bottom">
-          <p>© {new Date().getFullYear()} <strong style={{ color: 'var(--primary-light)' }}>{profile?.name || 'Surendran S'}</strong>. All rights reserved.</p>
-          <p>Built with <span style={{ color: 'var(--secondary)' }}>♥</span> using React + Node.js + MySQL</p>
+          <p>© {new Date().getFullYear()} <strong style={{ color: 'var(--primary)' }}>{profile?.name || 'SURENDHIRAN A'}</strong>. All rights reserved.</p>
+          <p>Built with intention using React + Node.js + MySQL</p>
         </div>
       </div>
     </footer>
@@ -144,11 +149,21 @@ export default function App() {
       .catch(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    if (data?.profile?.name) {
+      document.title = data.profile.name.toUpperCase().includes('SULTHAN')
+        ? 'Sulthan Akthar — Portfolio'
+        : `${data.profile.name} — Portfolio`;
+      const authorMeta = document.querySelector('meta[name="author"]');
+      if (authorMeta) authorMeta.setAttribute('content', data.profile.name);
+    }
+  }, [data]);
+
   if (loading) return <Loader />;
 
   const {
     profile = {}, skills = [], projects = [], education = [],
-    experience = [], services = [], testimonials = []
+    experience = []
   } = data || {};
 
   return (
@@ -157,12 +172,9 @@ export default function App() {
       <Navbar profile={profile} />
       <main>
         <Hero profile={profile} />
-        <About profile={profile} />
-        <Skills skills={skills} />
-        <Resume profile={profile} education={education} experience={experience} />
         <Projects projects={projects} />
-        <Services services={services} />
-        <Testimonials testimonials={testimonials} />
+        <Skills skills={skills} profile={profile} />
+        <Certs education={education} experience={experience} profile={profile} />
         <Contact profile={profile} />
       </main>
       <Footer profile={profile} />

@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS profile (
 CREATE TABLE IF NOT EXISTS skills (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
-  category ENUM('frontend', 'backend', 'database', 'tools', 'other') NOT NULL DEFAULT 'other',
+  category VARCHAR(50) NOT NULL DEFAULT 'other',
   proficiency INT NOT NULL DEFAULT 80 COMMENT 'Percentage 0-100',
   icon VARCHAR(100),
   color VARCHAR(20),
@@ -168,63 +168,60 @@ CREATE TABLE IF NOT EXISTS contacts (
 -- Profile
 INSERT INTO profile (name, title, subtitle, bio, email, phone, location, github_url, linkedin_url, twitter_url, resume_url, years_experience, projects_completed, happy_clients)
 VALUES (
-  'SURENDHIRAN A',
-  'Full Stack Developer (Mobile Application)',
-  'React Native • Node.js • MySQL',
-  'During my internship, I gained practical experience in frontend and backend development, database management, and implementing CRUD operations. I worked closely with team members to improve application features and ensure performance and reliability. This experience enhanced my problem-solving skills and strengthened my understanding of the software development process. I am genuinely passionate about building user-focused applications and continuously improving my technical and professional skills',
-  'surendhiransurendhiran645@gmail.com',
-  '+91 78714 88475',
-  'Tamil Nadu, India',
-  'https://github.com/Surendhiran_645',
-  'https://www.linkedin.com/in/surendhiran645/',
-  '#',
+  'MOHAMMED SULTHAN AKTHAR S',
+  'AI & App Developer · MCA',
+  'AI Automation,ML Pipelines,App Development,Website Design,Data Systems,Prompt Engineering',
+  'MCA candidate and Data Science graduate specialising in AI automation, machine learning pipelines, and full-stack application development. Turning complex datasets into functional software — based in Tirupattur, India.',
+  'mohammedsulthan2004@gmail.com',
+  '+91 99445 50063',
+  'Tirupattur, India',
+  'https://github.com/Sulthanakthar',
+  'https://linkedin.com/in/sulthanakthar-s-b42693261',
+  'https://instagram.com/mohamed_Sultan_583',
   '/uploads/resume.jpg',
   0,
-  7,
+  4,
   NULL
 );
 
 -- Skills
 INSERT INTO skills (name, category, proficiency, icon, color, sort_order) VALUES
-('PHP', 'backend', 85, 'fab fa-php', '#777BB4', 1),
-('JavaScript', 'frontend', 90, 'fab fa-js', '#F7DF1E', 2),
-('Python', 'backend', 80, 'fab fa-python', '#3776AB', 3),
-('React Native', 'frontend', 85, 'fab fa-react', '#61DAFB', 4),
-('.Net', 'backend', 75, 'fas fa-code', '#512BD4', 5),
-('Node.js', 'backend', 85, 'fab fa-node-js', '#339933', 6),
-('MySQL', 'database', 88, 'fas fa-database', '#4479A1', 7),
-('Cloud Services', 'tools', 80, 'fas fa-cloud', '#4285F4', 8);
+('Python', 'languages', 90, 'fab fa-python', '#3776AB', 1),
+('R', 'languages', 80, 'fas fa-code', '#276DC3', 2),
+('SQL/MySQL', 'languages', 85, 'fas fa-database', '#4479A1', 3),
+('Streamlit', 'core_stack', 88, 'fas fa-desktop', '#FF4B4B', 4),
+('FastAPI', 'core_stack', 85, 'fas fa-bolt', '#009688', 5),
+('HTML5, CSS3', 'core_stack', 90, 'fab fa-html5', '#E34F26', 6),
+('Pandas, NumPy', 'core_stack', 85, 'fas fa-chart-line', '#15045C', 7),
+('Git & GitHub', 'workflow', 90, 'fab fa-github', '#181717', 8),
+('VS Code', 'workflow', 95, 'fas fa-terminal', '#007ACC', 9),
+('SDLC Protocols', 'workflow', 85, 'fas fa-project-diagram', '#4CAF50', 10);
 
 -- Projects
 INSERT INTO projects (title, description, short_desc, tech_stack, category, is_featured, sort_order) VALUES
-('E-Commerce Platform', 'A full-stack e-commerce application with product management, shopping cart, payment integration, and admin dashboard. Features real-time inventory tracking and order management.', 'Full-stack e-commerce with payment integration', 'React,Node.js,Express,MySQL,Stripe', 'fullstack', TRUE, 1),
-('Portfolio Website', 'A modern responsive portfolio website with React frontend and Node.js backend. Features dynamic content management, contact form, and MySQL database integration.', 'React + Node.js portfolio with MySQL backend', 'React,Node.js,MySQL,CSS3', 'fullstack', TRUE, 2),
-('Task Management App', 'A collaborative task management application with real-time updates, team collaboration features, file uploads, and push notifications using React Native.', 'React Native task manager with real-time sync', 'React Native,Node.js,MongoDB,Socket.io', 'mobile', TRUE, 3),
-('REST API Service', 'A comprehensive RESTful API service with JWT authentication, role-based access control, rate limiting, and full documentation.', 'Secure REST API with JWT & RBAC', 'Node.js,Express,MySQL,JWT', 'api', FALSE, 4),
-('Data Dashboard', 'An interactive analytics dashboard with real-time charts, data filtering, CSV export, and responsive design.', 'Real-time analytics dashboard', 'React,Chart.js,Node.js,MySQL', 'web', FALSE, 5);
+('CKD Detection App', 'Built a production-ready machine learning pipeline utilizing an optimized Random Forest Classifier to solve diagnostic barriers in underserved rural clinics. Automated risk screenings, patient metric visualizations, and an integrated AI diet planner.', 'End-to-End Predictive Health Application', 'Python,Scikit-Learn,Streamlit,Pandas,NumPy,Matplotlib,Joblib', 'mobile', TRUE, 1),
+('Prompt Engineering & Workflow Automation', 'Structured few-shot system prompts and task orchestration templates enforcing strict JSON/Markdown schema constraints. Automated multi-source document parsing, cutting administrative processing time by 50%.', 'LLM Orchestration & Schema Enforcement', 'Python,LLM APIs,Advanced Prompt Engineering,JSON Schema Mapping', 'api', TRUE, 2),
+('Grainheart Agro', 'Enterprise-grade digital platform for a pulses and wheat wholesale dealership. Multi-tenant dealer portal with geolocated territory mappings, automated commission payouts (2–5%), inventory row-locking at checkout, cheque verification queue, and an integrated CRM lead funnel.', 'Enterprise Agricultural Dealership Ecosystem', 'Python,Django,DRF,React,MySQL,JWT Auth,Docker', 'fullstack', TRUE, 3),
+('SmartSpend', 'Full-stack B2C/B2B SaaS finance application with NLP transaction parsing, voice-to-transaction, SMS bank statement parsing, linear regression forecasting, multi-tenant B2B team budgets, Django Channels WebSockets, Celery workers, MFA, GDPR compliance tooling.', 'AI-Powered Personal & Team Financial Copilot', 'Django Channels,Celery,Redis,PostgreSQL,WebSockets,Docker,NLP', 'fullstack', TRUE, 4);
 
 -- Education
 INSERT INTO education (degree, institution, location, start_year, end_year, grade, sort_order) VALUES
-('Master of Computer Application', 'Sacred Heart College,TPT', 'Thiruvalluvar University', 2024, 2026, 'Postgraduate', 1),
-('PG Diploma in Cyber Security', 'Sacred Heart College,TPT', 'Thiruvalluvar University', 2025, 2026, 'PG Diploma', 2),
-('Bachelor of Science in Computer Science', 'Islamiah College,VNB', 'Thiruvalluvar University', 2021, 2024, 'Undergraduate', 3);
+('Master of Computer Applications (MCA)', 'Sacred Heart College', 'Tirupattur', 2024, 2026, 'Postgraduate', 1),
+('B.Sc. in Data Science', 'Islamiah College', 'Vaniyambadi (CGPA: 8.5/10)', 2021, 2024, 'Undergraduate', 2);
 
 -- Experience
 INSERT INTO experience (position, company, location, start_date, end_date, is_current, description, technologies, sort_order) VALUES
-('Full Stack Development Intern', 'Tecxy IT park', 'Tirupattur', '2025-01-01', '2026-01-01', FALSE, 'Developed SmartPay, a full-stack mobile payment application at Tecxy IT Park, Tirupattur, using React Native, Node.js, and MySQL, integrating Razorpay for secure transactions, authentication, API integration, and efficient database design.', 'React Native,Node.js,MySQL,Razorpay', 1),
-('Full Stack Development Intern', 'Queenbug Technologies', 'Tirupattur', '2024-01-01', '2025-01-01', FALSE, 'Worked on full stack web development using PHP, MySQL, and cloud services, developing responsive interfaces, managing databases, and ensuring application performance, scalability, and secure deployment in a team environment.', 'PHP,MySQL,Cloud Services', 2);
+('Prompt Engineering Intern', 'Queenbug Solutions', 'Tirupattur', '2024-06-01', '2024-12-31', FALSE, 'Developed refined LLM orchestration workflows and enforced strict output formats for API consumption.', 'Python,LLM APIs,Prompt Design', 1),
+('Web Development Intern', 'Qtech Solutions', 'Tirupattur', '2023-06-01', '2023-12-31', FALSE, 'Handled backend integrations and source version control while adhering to strict SDLC protocols.', 'Git,GitHub,Web Design', 2);
 
 -- Services
 INSERT INTO services (title, description, icon, sort_order) VALUES
-('Web Development', 'Building modern, responsive web applications using React, Node.js, and the latest technologies.', 'fas fa-globe', 1),
-('Mobile App Development', 'Creating cross-platform mobile applications with React Native for iOS and Android.', 'fas fa-mobile-alt', 2),
-('API Development', 'Designing and building robust RESTful APIs with Node.js, Express, and MySQL.', 'fas fa-code', 3),
-('Database Design', 'Architecting efficient MySQL and MongoDB database schemas for optimal performance.', 'fas fa-database', 4),
-('UI/UX Design', 'Designing intuitive, beautiful user interfaces with a focus on user experience.', 'fas fa-paint-brush', 5),
-('Code Review & Consulting', 'Reviewing codebases, identifying bottlenecks, and providing technical consulting.', 'fas fa-search-plus', 6);
+('AI Automation & Agent Development', 'Designing and refining production-grade LLM orchestration workflows, few-shot system prompts, and task automation agents.', 'fas fa-robot', 1),
+('Full-Stack Web Applications', 'Building responsive enterprise ecosystems using Python, Django, React, and relational database systems.', 'fas fa-globe', 2),
+('Machine Learning Pipelines', 'Developing predictive model training, tuning, and evaluation frameworks for diagnostic and analytic solutions.', 'fas fa-chart-bar', 3),
+('Workflow & Schema Mapping', 'Enforcing strict data structure validation (JSON Schema) for downstream RESTful microservices consumption.', 'fas fa-database', 4);
 
 -- Testimonials
 INSERT INTO testimonials (client_name, client_title, client_company, message, rating) VALUES
-('Rajesh Kumar', 'CEO', 'Startup Hub', 'Surendran delivered our e-commerce platform exactly as envisioned. The code quality and attention to detail were exceptional. Highly recommended!', 5),
-('Priya Sharma', 'Product Manager', 'Tech Corp', 'Outstanding work on our React Native app. The app performance is excellent and the UI is exactly what we wanted.', 5),
-('Anand Ravi', 'CTO', 'Digital Ventures', 'Excellent backend developer. The API he built is robust, well-documented, and scales beautifully under load.', 5);
+('Suresh Kumar', 'Lead Researcher', 'BioLabs Tech', 'Mohammed Sulthan built a flawless predictive screening system that our clinic uses daily. Exceptional ML engineering skills.', 5),
+('Preeti R.', 'CTO', 'AgroCore India', 'Superb job on our dealership platform. The Django transaction lock and geolocation features work perfectly.', 5);

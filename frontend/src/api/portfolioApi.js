@@ -2,7 +2,9 @@
 // Centralized API calls to backend
 import axios from 'axios';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE = (import.meta.env.VITE_API_URL && !import.meta.env.VITE_API_URL.includes('localhost'))
+  ? import.meta.env.VITE_API_URL
+  : `https://${window.location.hostname}:5000/api`;
 
 const api = axios.create({
   baseURL: API_BASE,
@@ -20,7 +22,7 @@ const FALLBACK_DATA = {
     email: 'surendhiransurendhiran645@gmail.com',
     phone: '+91 78714 88475',
     location: 'Tamil Nadu, India',
-    github_url: 'https://github.com/Surendhiran_645',
+    github_url: 'https://github.com/surendhitan',
     linkedin_url: 'https://www.linkedin.com/in/surendhiran645/',
     twitter_url: '#',
     resume_url: '/resume.jpg',

@@ -1,68 +1,118 @@
+// src/components/Projects.jsx
 import { useState } from 'react';
 import '../styles/Components.css';
 
-const EMOJIS = { fullstack: '🌐', web: '💻', mobile: '📱', api: '⚙️', other: '🚀' };
 const FILTERS = ['all', 'fullstack', 'web', 'mobile', 'api'];
 
-export default function Projects({ projects }) {
+const CATEGORY_TAGLINES = {
+  fullstack: 'FULL-STACK ENTERPRISE SYSTEM',
+  web: 'WEB INTERFACE & CORE APPLICATION',
+  mobile: 'HYBRID MOBILE PLATFORM',
+  api: 'SECURE REST MICROSERVICE',
+  other: 'UTILITY MODULE & TOOL'
+};
+
+export default function Projects({ projects = [] }) {
   const [filter, setFilter] = useState('all');
   const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+
+  // Helper to generate a unique gradient for the banner based on title hash
+  const getBannerStyle = (title) => {
+    let hash = 0;
+    for (let i = 0; i < title.length; i++) {
+      hash = title.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const hue = Math.abs(hash % 360);
+    return {
+      background: `linear-gradient(135deg, hsl(${hue}, 40%, 8%) 0%, hsl(${hue}, 60%, 15%) 100%)`,
+      position: 'relative',
+      overflow: 'hidden'
+    };
+  };
 
   return (
     <section id="projects" className="section" style={{ background: 'var(--bg2)' }}>
       <div className="container">
+        
+        {/* Section Header */}
         <div className="section-header">
-          <div className="section-tag">My Work</div>
-          <h2 className="section-title">Featured Projects</h2>
-          <p className="section-subtitle">A selection of real-world projects I've built using modern technologies</p>
+          <span className="section-tag">SELECTED SYSTEMS</span>
+          <h2 className="section-title">Work & Projects</h2>
+          <p className="section-subtitle">
+            A selection of technical architectures, mobile applications, and backend systems I have engineered.
+          </p>
         </div>
+
+        {/* Filter Tabs */}
         <div className="category-tabs">
           {FILTERS.map(f => (
-            <button key={f} className={`tab-btn ${filter === f ? 'active' : ''}`}
-              onClick={() => setFilter(f)}>
-              {f.charAt(0).toUpperCase() + f.slice(1)}
+            <button 
+              key={f} 
+              className={`tab-btn ${filter === f ? 'active' : ''}`}
+              onClick={() => setFilter(f)}
+            >
+              {f.toUpperCase()}
             </button>
           ))}
         </div>
-        <div className="projects-grid">
-          {filtered.map((p, i) => (
-            <div key={p.id} className="glass project-card fade-in" style={{ animationDelay: `${i * 0.08}s` }}>
-              <div className="project-img">
-                <span>{EMOJIS[p.category] || '🚀'}</span>
-                <div className="project-img-overlay">
-                  <i className="fas fa-external-link-alt" style={{ color: '#fff', fontSize: '2rem' }} />
+
+        {/* Systems List */}
+        <div className="systems-list">
+          {filtered.map((p, i) => {
+            const numStr = String(i + 1).padStart(2, '0');
+            const tagline = CATEGORY_TAGLINES[p.category] || CATEGORY_TAGLINES.other;
+            const tags = typeof p.tech_stack === 'string' 
+              ? p.tech_stack.split(',').map(t => t.trim()) 
+              : (Array.isArray(p.tech_stack) ? p.tech_stack : []);
+
+            return (
+              <div 
+                key={p.id || i} 
+                className="system-card fade-in" 
+                style={{ animationDelay: `${i * 0.08}s` }}
+              >
+                {/* Visual Banner */}
+                <div className="system-banner" style={getBannerStyle(p.title)}>
+                  {/* Decorative grid overlay inside banner */}
+                  <div className="banner-grid-overlay" />
+                  <div className="banner-icon-wrapper">
+                    <i className={p.category === 'mobile' ? 'fas fa-mobile-alt' : p.category === 'api' ? 'fas fa-cogs' : 'fas fa-laptop-code'} />
+                  </div>
+                </div>
+
+                {/* Content Area */}
+                <div className="system-details">
+                  <div className="system-num">{numStr}</div>
+                  <h3 className="system-title">{p.title}</h3>
+                  <div className="system-tagline">{tagline}</div>
+                  <p className="system-desc">{p.short_desc || p.description}</p>
+                  
+                  {/* Tech stack */}
+                  <div className="system-tags">
+                    {tags.map(t => (
+                      <span key={t} className="system-tag-pill">{t}</span>
+                    ))}
+                  </div>
+
+                  {/* Links */}
+                  <div className="system-links">
+                    {p.github_url && p.github_url !== '#' && (
+                      <a href={p.github_url} target="_blank" rel="noreferrer" className="system-link-btn">
+                        <i className="fab fa-github" /> CODE REPOSITORY
+                      </a>
+                    )}
+                    {p.live_url && p.live_url !== '#' && (
+                      <a href={p.live_url} target="_blank" rel="noreferrer" className="system-link-btn primary">
+                        <i className="fas fa-external-link-alt" /> LAUNCH SYSTEM
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
-              {p.is_featured && (
-                <div className="project-badge">
-                  <span className="project-category-badge">⭐ Featured</span>
-                </div>
-              )}
-              <span className="project-category-badge" style={{ marginBottom: '0.5rem', display: 'inline-block' }}>
-                {p.category}
-              </span>
-              <h3 className="project-title">{p.title}</h3>
-              <p className="project-desc">{p.short_desc || p.description}</p>
-              <div className="tech-tags">
-                {(Array.isArray(p.tech_stack) ? p.tech_stack : []).map(t => (
-                  <span key={t} className="tech-tag">{t}</span>
-                ))}
-              </div>
-              <div className="project-links">
-                {p.github_url && p.github_url !== '#' && (
-                  <a href={p.github_url} target="_blank" rel="noreferrer" className="project-link">
-                    <i className="fab fa-github" /> GitHub
-                  </a>
-                )}
-                {p.live_url && p.live_url !== '#' && (
-                  <a href={p.live_url} target="_blank" rel="noreferrer" className="project-link primary">
-                    <i className="fas fa-external-link-alt" /> Live Demo
-                  </a>
-                )}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
+
       </div>
     </section>
   );

@@ -24,13 +24,8 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
 }));
 
-// CORS — allow frontend origin
 app.use(cors({
-  origin: [
-    process.env.FRONTEND_URL || 'http://localhost:3000',
-    'http://localhost:5173', // Vite default
-    'http://localhost:3000',
-  ],
+  origin: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -135,18 +130,48 @@ app.use((err, req, res, next) => {
 // ============================================
 // START SERVER
 // ============================================
-app.listen(PORT, () => {
-  const isProd = process.env.NODE_ENV === 'production';
+const fs = require('fs');
+const https = require('https');
+
+let server;
+const isProd = process.env.NODE_ENV === 'production';
+
+// Try loading HTTPS certificates
+try {
+  const keyPath = path.join(__dirname, 'config/key.pem');
+  const certPath = path.join(__dirname, 'config/cert.pem');
+  
+  if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
+    const options = {
+      key: fs.readFileSync(keyPath),
+      cert: fs.readFileSync(certPath),
+    };
+    server = https.createServer(options, app);
+    console.log('  🔒 SSL Certificates loaded. Starting server on HTTPS.');
+  } else {
+    server = app;
+    console.log('  ⚠️ SSL Certificates not found. Starting server on HTTP.');
+  }
+} catch (err) {
+  server = app;
+  console.error('  ❌ Error loading SSL Certificates:', err.message);
+  console.log('  ⚠️ Starting server on HTTP fallback.');
+}
+
+server.listen(PORT, () => {
+  const isHttps = server instanceof https.Server;
+  const protocol = isHttps ? 'https' : 'http';
+  
   console.log('\n========================================');
   console.log('  🚀 Portfolio Server Started!');
   console.log('========================================');
   if (isProd) {
-    console.log(`  ✅ App:    http://localhost:${PORT}`);
+    console.log(`  ✅ App:    ${protocol}://localhost:${PORT}`);
   } else {
-    console.log(`  ✅ API:    http://localhost:${PORT}/api`);
-    console.log(`  ✅ Frontend runs separately on :3000`);
+    console.log(`  ✅ API:    ${protocol}://localhost:${PORT}/api`);
+    console.log(`  ✅ Frontend runs separately`);
   }
-  console.log(`  ✅ Health: http://localhost:${PORT}/api/health`);
+  console.log(`  ✅ Health: ${protocol}://localhost:${PORT}/api/health`);
   console.log(`  ✅ Mode:   ${process.env.NODE_ENV || 'development'}`);
   console.log('========================================\n');
 });

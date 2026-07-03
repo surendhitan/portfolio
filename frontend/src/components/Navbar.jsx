@@ -2,22 +2,19 @@ import { useState, useEffect } from 'react';
 import '../styles/Navbar.css';
 
 const navItems = [
-  { label: 'Home', href: '#home' },
-  { label: 'About', href: '#about' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Resume', href: '#resume' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Services', href: '#services' },
+  { label: 'Work', href: '#projects' },
+  { label: 'Stack', href: '#skills' },
+  { label: 'Certs', href: '#certs' },
   { label: 'Contact', href: '#contact' },
 ];
 
 export default function Navbar({ profile }) {
   const [scrolled, setScrolled] = useState(false);
-  const [active, setActive] = useState('home');
+  const [active, setActive] = useState('projects');
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    let lastActive = 'home';
+    let lastActive = 'projects';
     const onScroll = () => {
       setScrolled(window.scrollY > 50);
       const sections = navItems.map(n => n.href.slice(1));
@@ -51,11 +48,15 @@ export default function Navbar({ profile }) {
     }
   }, []);
 
+  const rawPhone = profile?.phone ? profile.phone.replace(/\s+/g, '').replace(/-/g, '') : '';
+
   return (
     <>
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="container navbar-inner">
-          <span className="logo">{profile?.name?.split(' ')[0] || 'Portfolio'}</span>
+          <span className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} style={{ cursor: 'pointer' }}>
+            {profile?.name || 'SURENDHIRAN A'}
+          </span>
           <ul className="nav-links">
             {navItems.map(n => (
               <li key={n.href}>
@@ -66,10 +67,13 @@ export default function Navbar({ profile }) {
               </li>
             ))}
           </ul>
-          <a href="#contact" className="btn btn-primary nav-cta"
-            onClick={e => { e.preventDefault(); scrollTo('#contact'); }}>
-            Hire Me
-          </a>
+          
+          {profile?.phone && (
+            <a href={`https://wa.me/${rawPhone.replace('+', '')}`} target="_blank" rel="noreferrer" className="btn btn-outline nav-cta phone-cta">
+              <i className="fab fa-whatsapp" style={{ color: '#25D366', marginRight: '6px' }} /> {profile.phone}
+            </a>
+          )}
+
           <button className={`hamburger ${menuOpen ? 'open' : ''}`} onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
             <span /><span /><span />
           </button>
@@ -85,6 +89,11 @@ export default function Navbar({ profile }) {
             {n.label}
           </a>
         ))}
+        {profile?.phone && (
+          <a href={`https://wa.me/${rawPhone.replace('+', '')}`} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ marginTop: '1rem' }}>
+            <i className="fab fa-whatsapp" style={{ marginRight: '6px' }} /> WhatsApp Me
+          </a>
+        )}
       </div>
     </>
   );
