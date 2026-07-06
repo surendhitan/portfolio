@@ -13,13 +13,12 @@ echo "  🚀 Portfolio Deployment Starting..."
 echo "========================================="
 echo ""
 
-# ─── CONFIG — EDIT THESE BEFORE RUNNING ───────────────────
+# ─── CONFIG ───────────────────────────────────────────────
 GITHUB_REPO="https://github.com/surendhitan/portfolio.git"
 APP_DIR="/home/ubuntu/portfolio"
 DB_NAME="portfolio_db"
 DB_USER="portfoliouser"
-DB_PASS="ChangeThisPassword123!"   # <-- CHANGE THIS
-DOMAIN=""   # Leave empty for now, fill in after DuckDNS setup
+DB_PASS="Portfolio@2025!"
 # ──────────────────────────────────────────────────────────
 
 echo "📦 Step 1: Updating system packages..."
@@ -127,12 +126,11 @@ echo "  ✅ React build complete → frontend/dist/"
 echo ""
 echo "📦 Step 12: Configuring Nginx..."
 PUBLIC_IP=$(curl -s http://checkip.amazonaws.com)
-SERVER_NAME="${DOMAIN:-$PUBLIC_IP}"
 
 sudo tee /etc/nginx/sites-available/portfolio > /dev/null << NGINX
 server {
     listen 80;
-    server_name ${SERVER_NAME};
+    server_name _;
 
     # React Frontend (serve built files)
     location / {
